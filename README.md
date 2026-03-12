@@ -20,5 +20,5 @@ A little about me:
 - [University of Auckland STATS 220 Home page] (https://canvas.auckland.ac.nz/courses/141163/pages/wharangi-kainga-%7C-home-page-2?module_item_id=2815407)
 
 ## A meme that captures how I currently feel about my university studies is
-![Studying meme](https://media.giphy.com/media/xT9IgG50Lg7rusA2tO/giphy.gif)
+![Studying meme](meme.gif)
 
