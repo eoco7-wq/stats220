@@ -1,0 +1,58 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+```
+```{css}
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+h2 {
+  color: #2c3e50;
+}
+```
+
+## My eating and drinking habits
+
+This report analyses my personal eating and drinking observations recorded over several days. The data includes what I consumed, where it came from, how long each occasion took, and how hungry I was beforehand.
+```{r}
+library(tidyverse)
+
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vRVF9Y5x_cYuEhx6uxgw-_FSC8g9ZhleAA-obB7GmTNm90Td9KOT54zMAFkb2p7xRqxrpoHUKJhFQdD/pub?gid=863542806&single=true&output=csv")
+
+latest_data <- logged_data %>%
+  rename(
+    timestamp = Timestamp,
+    score = Score,
+    hunger_score = `How hungry were you before eating/drinking occasion? (1 = not hungry at all, 10 = extremely hungry)`,
+    food_type = `What type of food / drink did you primarily consume?`,
+    food_source = `Where did the food/drink come from?`,
+    duration = `Approximately how many minutes did this eating / drinking occasion take?`,
+    time_of_day = `What time of day was this observation?`
+  )
+
+mean_hunger <- round(mean(latest_data$hunger_score, na.rm = TRUE), 1)
+mean_duration <- round(mean(latest_data$duration, na.rm = TRUE), 1)
+total_obs <- length(latest_data$hunger_score)
+```
+
+Across `r total_obs` observations, my average hunger score before eating or drinking was `r mean_hunger` out of 10, and the average duration of each occasion was `r mean_duration` minutes.
+```{r}
+ggplot(latest_data, aes(x = food_type)) +
+  geom_bar(fill = "steelblue") +
+  labs(title = "Types of food/drink consumed",
+       x = "Food/drink type",
+       y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+```{r}
+ggplot(latest_data, aes(x = food_source)) +
+  geom_bar(fill = "coral") +
+  labs(title = "Where food/drink came from",
+       x = "Source",
+       y = "Count") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
